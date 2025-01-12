@@ -2,11 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -18,7 +13,7 @@ class RegisterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true; // 認証不要の設定
     }
 
     /**
@@ -26,27 +21,40 @@ class RegisterRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function authorize()
-    {
-        return true; // 認証の必要がない場合は true を返す
-    }
-
     public function rules()
     {
         return [
-            'username' => 'required|min:2|max:12',
-            'email' => 'required|email|min:5|max:40|unique:users,email',
-            'password' => 'required|regex:/^[a-zA-Z0-9]+$/|min:8|max:20',
-            'password_confirmation' => 'required|same:password|regex:/^[a-zA-Z0-9]+$/|min:8|max:20',
+            'name' => 'required|string|min:2|max:12',
+            'email' => 'required|string|email|min:5|max:40|unique:users,email',
+            'password' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z0-9]+$/',
+                'min:8',
+                'max:20',
+            ],
+            'password_confirmation' => [
+                'required',
+                'string',
+                'same:password',
+                'regex:/^[a-zA-Z0-9]+$/',
+                'min:8',
+                'max:20',
+            ],
         ];
     }
 
+    /**
+     * Get custom error messages for validation failures.
+     *
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [
-            'username.required' => 'ユーザー名は必須項目です。',
-            'username.min' => 'ユーザー名は2文字以上で入力してください。',
-            'username.max' => 'ユーザー名は12文字以内で入力してください。',
+            'name.required' => 'ユーザー名は必須項目です。',
+            'name.min' => 'ユーザー名は2文字以上で入力してください。',
+            'name.max' => 'ユーザー名は12文字以内で入力してください。',
             'email.required' => 'メールアドレスは必須項目です。',
             'email.email' => '有効なメールアドレス形式で入力してください。',
             'email.unique' => 'このメールアドレスは既に登録されています。',
@@ -58,4 +66,5 @@ class RegisterRequest extends FormRequest
             'password_confirmation.same' => 'パスワード確認が一致しません。',
         ];
     }
+    
 }

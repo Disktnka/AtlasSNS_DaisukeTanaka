@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-use App\Http\Controllers\Controller\UserController;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRegistrationRequest extends FormRequest

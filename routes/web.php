@@ -6,6 +6,15 @@ use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
+// 登録ページ
+Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+
+// 登録処理
+Route::post('register', [RegisteredUserController::class, 'store'])->name('register.store');
+
+// 登録完了ページ
+Route::get('added', [RegisteredUserController::class, 'added'])->name('added');
+
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
