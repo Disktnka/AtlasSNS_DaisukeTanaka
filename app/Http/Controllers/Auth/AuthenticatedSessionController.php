@@ -29,7 +29,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended('top');
+        return $this->authenticated($request, Auth::user());
     }
 
+    /**
+     * Redirect the user after authentication.
+     */
+    protected function authenticated(Request $request, $user): RedirectResponse
+    {
+        return redirect()->intended('/dashboard');
+    }
 }
