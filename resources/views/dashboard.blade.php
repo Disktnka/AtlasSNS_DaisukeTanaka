@@ -1,12 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
-    <h1>Welcome to the Dashboard</h1>
-    <p>You are logged in!</p>
-</body>
-</html>
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
+use App\Models\User;
+
+class DashboardController extends Controller
+{
+    public function index()
+    {
+        $posts = Post::with('user')->latest()->get();
+        $followingCount = Auth::user()->following()->count();
+        $followersCount = Auth::user()->followers()->count();
+
+        return view('dashboard', compact('posts', 'followingCount', 'followersCount'));
+    }
+}

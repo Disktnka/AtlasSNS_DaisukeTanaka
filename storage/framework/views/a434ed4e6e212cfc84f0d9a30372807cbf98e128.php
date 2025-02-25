@@ -1,4 +1,12 @@
-<x-logout-layout>
+<?php if (isset($component)) { $__componentOriginalfe9e0c829c4c4b45cae7abeabb8a170e44796ba1 = $component; } ?>
+<?php $component = App\View\Components\LogoutLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('logout-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\LogoutLayout::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
   <style>
     body {
         background: linear-gradient(to bottom, #0072ff, #f4d03f);
@@ -93,19 +101,19 @@
       <h2 class="login-title">AtlasSNSへようこそ</h2>
 
       <!-- ログインフォーム -->
-      <form action="{{ route('login') }}" method="POST">
-          @csrf <!-- CSRFトークンを埋め込む -->
+      <form action="<?php echo e(route('login')); ?>" method="POST">
+          <?php echo csrf_field(); ?> <!-- CSRFトークンを埋め込む -->
 
           <!-- エラーメッセージの表示 -->
-          @if ($errors->any())
+          <?php if($errors->any()): ?>
               <div class="alert">
                   <ul>
-                      @foreach ($errors->all() as $error)
-                          <li>{{ $error }}</li>
-                      @endforeach
+                      <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                          <li><?php echo e($error); ?></li>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                   </ul>
               </div>
-          @endif
+          <?php endif; ?>
 
           <label for="email">メールアドレス</label>
           <input type="email" name="email" id="email" class="input-box" required>
@@ -116,7 +124,13 @@
           <button type="submit" class="login-button">ログイン</button>
       </form>
 
-      <p><a href="{{ route('register') }}" class="register-link">新規ユーザーの方はこちら</a></p>
+      <p><a href="<?php echo e(route('register')); ?>" class="register-link">新規ユーザーの方はこちら</a></p>
   </div>
 
-</x-logout-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalfe9e0c829c4c4b45cae7abeabb8a170e44796ba1)): ?>
+<?php $component = $__componentOriginalfe9e0c829c4c4b45cae7abeabb8a170e44796ba1; ?>
+<?php unset($__componentOriginalfe9e0c829c4c4b45cae7abeabb8a170e44796ba1); ?>
+<?php endif; ?>
+<?php /**PATH C:\Users\yc2b4\OneDrive\Desktop\AtlasSNS_DaisukeTanaka\resources\views/auth/login.blade.php ENDPATH**/ ?>

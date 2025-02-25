@@ -17,7 +17,7 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create()
     {
         return view('auth.register');
     }
@@ -29,6 +29,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // バリデーション
         $validated = $request->validate([
             'username' => 'required|string|min:2|max:12',
             'email' => 'required|string|email|max:40|unique:users,email',
@@ -36,18 +37,21 @@ class RegisteredUserController extends Controller
             'password_confirmation' => 'required|same:password',
         ]);
 
+        // ユーザーを作成
         $user = User::create([
             'username' => $validated['username'], // `name` に変更
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
-        session(['user_id' => $user->username]);
 
+        // セッションにユーザー名を保存
+        session(['userName' => $user->username]);
+
+        // ログイン
         Auth::login($user);
 
-        return redirect('http://127.0.0.1:8000/added');
-
-        
+        // 登録完了ページにリダイレクト
+        return redirect()->route('added');
     }
 
     /**
@@ -55,6 +59,9 @@ class RegisteredUserController extends Controller
      */
     public function added(): View
     {
-        return view('auth.added');
+        // セッションからユーザー名を取得
+        $userName = session('userName');
+    
+        return view('auth.added', compact('userName'));
     }
 }
